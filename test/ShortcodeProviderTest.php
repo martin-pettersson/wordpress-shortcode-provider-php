@@ -67,7 +67,6 @@ class ShortcodeProviderTest extends TestCase
     #[Test]
     public function shouldRegisterShortcodeClassesFromConfiguration(): void
     {
-        $addShortcodeMock = $this->getFunctionMock(__NAMESPACE__, 'add_shortcode');
         $shortcodeMock = $this->getMockBuilder(Shortcode::class)->getMock();
 
         $shortcodeMock
@@ -83,7 +82,9 @@ class ShortcodeProviderTest extends TestCase
             ->method('construct')
             ->with('class')
             ->willReturn($shortcodeMock);
-        $addShortcodeMock->expects($this->once())->with($this->anything(), $this->anything());
+        $this->getFunctionMock(__NAMESPACE__, 'add_shortcode')
+            ->expects($this->once())
+            ->with($this->anything(), $this->anything());
 
         $this->provider->load($this->containerMock);
     }
